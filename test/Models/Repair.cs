@@ -12,7 +12,7 @@ public class Repair
     /// <summary>
     /// Исполнитель
     /// </summary>
-    public Shop Service { get; set; }
+    public Shop Shop { get; set; }
 
     /// <summary>
     /// Транспортное средство

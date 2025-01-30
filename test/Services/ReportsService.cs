@@ -12,7 +12,7 @@ public class ReportsService
         _logger = logger;
     }
 
-    public ServiceReport BuildServiceReport(string serviceId)
+    public ShopReport BuildShopReport(string serviceId)
     {
         var service = _ctx.Services.FirstOrDefault(x => x.IdNumber == serviceId);
 
@@ -21,7 +21,7 @@ public class ReportsService
             throw new System.Exception("Not found");
         }
 
-        var repairs = _ctx.Repairs.Where(x => x.Service == service);
+        var repairs = _ctx.Repairs.Where(x => x.Shop == service);
 
         return new()
         {
@@ -45,9 +45,9 @@ public class ReportsService
         return new() { Repairs = repairs, TotalCount = repairs.Count(), TotalSum = repairs.Sum(x => x.Cost) };
     }
 
-    public VehicleReport BuildVehiclesReport(Guid vehicleId)
+    public VehicleReport BuildVehiclesReport(string vehicleId)
     {
-        var vehicle = _ctx.Vehicles.FirstOrDefault(x => x.Id == vehicleId);
+        var vehicle = _ctx.Vehicles.FirstOrDefault(x => x.CarNumber == vehicleId);
 
         if (vehicle == null)
         {
@@ -70,7 +70,7 @@ public class ReportsService
         }
 
         var repairs = _ctx.Repairs.Where(
-            x => x.Service == service &&
+            x => x.Shop == service &&
                 x.FinishedDate != null &&
                 x.FinishedDate >= start &&
                 x.FinishedDate <= end);
