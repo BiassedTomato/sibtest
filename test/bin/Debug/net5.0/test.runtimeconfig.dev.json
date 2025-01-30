@@ -1,8 +1,0 @@
-{
-  "runtimeOptions": {
-    "additionalProbingPaths": [
-      "C:\\Users\\sencha\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\sencha\\.nuget\\packages"
-    ]
-  }
-}
