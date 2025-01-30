@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class Shop
 {
@@ -9,4 +10,6 @@ public class Shop
     /// ИНН. Используется для идентификации
     /// </summary>
     public string IdNumber { get; set; }
+
+    public IEnumerable<Repair> Repairs { get; set; }
 }

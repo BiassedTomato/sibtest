@@ -25,11 +25,5 @@ namespace test.Controllers
 
             _reportsService = reports;
         }
-
-        [HttpGet("get")]
-        public ClientReport Test([FromQuery] string IdNumber)
-        {
-            return _reportsService.BuildClientReport(IdNumber);
-        }
     }
 }

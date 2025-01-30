@@ -21,13 +21,50 @@ public class AppContext : DbContext
     public DbSet<Client> Clients { get; set; }
     public DbSet<Shop> Services { get; set; }
     public DbSet<Vehicle> Vehicles { get; set; }
+    public DbSet<RepairType> RepairTypes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Client>().HasMany(x => x.Vehicles).WithOne(x => x.Owner);
         modelBuilder.Entity<Client>().HasMany(x => x.Repairs).WithOne(x => x.Client);
 
-        modelBuilder.Entity<Client>().HasData(new Client { Id = Guid.NewGuid(), FirstName = "Arsern", LastName = "She", IdNumber = "123321" });
+        modelBuilder.Entity<Repair>().HasOne(x => x.Shop).WithMany(x => x.Repairs);
+        modelBuilder.Entity<Repair>().HasOne(x => x.Vehicle);
+        modelBuilder.Entity<Repair>().HasOne(x => x.RepairType);
+
+        modelBuilder.Entity<RepairType>().HasData(
+            new RepairType()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Выправление вмятин",
+                Cost = 5000,
+            },
+            new RepairType()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Замена масла",
+                Cost = 8000,
+            },
+            new RepairType()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Замена двигателя",
+                Cost = 500_000,
+            },
+            new RepairType()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Замена колес/покрышек",
+                Cost = 2500,
+            },
+            new RepairType()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Установка радиоприемника",
+                Cost = 800,
+            }
+        );
+
         base.OnModelCreating(modelBuilder);
     }
 }
