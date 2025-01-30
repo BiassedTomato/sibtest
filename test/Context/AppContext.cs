@@ -19,7 +19,7 @@ public class AppContext : DbContext
 
     public DbSet<Repair> Repairs { get; set; }
     public DbSet<Client> Clients { get; set; }
-    public DbSet<Shop> Services { get; set; }
+    public DbSet<Shop> Shops { get; set; }
     public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<RepairType> RepairTypes { get; set; }
 

@@ -14,7 +14,7 @@ public class ReportsService
 
     public ShopReport BuildShopReport(string serviceId)
     {
-        var service = _ctx.Services.FirstOrDefault(x => x.IdNumber == serviceId);
+        var service = _ctx.Shops.FirstOrDefault(x => x.IdNumber == serviceId);
 
         if (service == null)
         {
@@ -62,7 +62,7 @@ public class ReportsService
 
     public RepairsReport BuildRepairsReport(string serviceId, DateTime start, DateTime end)
     {
-        var service = _ctx.Services.FirstOrDefault(x => x.IdNumber == serviceId);
+        var service = _ctx.Shops.FirstOrDefault(x => x.IdNumber == serviceId);
 
         if (service == null)
         {
