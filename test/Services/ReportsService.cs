@@ -18,7 +18,7 @@ public class ReportsService
 
         if (service == null)
         {
-            throw new System.Exception("Not found");
+            return null;
         }
 
         var repairs = _ctx.Repairs.Where(x => x.Shop == service);
@@ -37,7 +37,7 @@ public class ReportsService
 
         if (client == null)
         {
-            throw new System.Exception("Not found");
+            return null;
         }
 
         var repairs = _ctx.Repairs.Where(x => x.Client == client);
@@ -47,11 +47,11 @@ public class ReportsService
 
     public VehicleReport BuildVehiclesReport(string vehicleId)
     {
-        var vehicle = _ctx.Vehicles.FirstOrDefault(x => x.CarNumber == vehicleId);
+        var vehicle = _ctx.Vehicles.FirstOrDefault(x => x.VehicleNumber == vehicleId);
 
         if (vehicle == null)
         {
-            throw new System.Exception("Not found");
+            return null;
         }
 
         var repairs = _ctx.Repairs.Where(x => x.Vehicle == vehicle);
@@ -66,7 +66,7 @@ public class ReportsService
 
         if (service == null)
         {
-            throw new System.Exception("Not found");
+            return null;
         }
 
         var repairs = _ctx.Repairs.Where(

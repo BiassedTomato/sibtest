@@ -11,5 +11,7 @@ public class Shop
     /// </summary>
     public string IdNumber { get; set; }
 
+    public IEnumerable<Client> Clients { get; set; }
+
     public IEnumerable<Repair> Repairs { get; set; }
 }

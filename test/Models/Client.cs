@@ -7,6 +7,8 @@ public class Client
     public string FirstName { get; set; }
     public string LastName { get; set; }
 
+    public Shop Shop { get; set; }
+
     public ICollection<Vehicle> Vehicles { get; set; }
 
     /// <summary>

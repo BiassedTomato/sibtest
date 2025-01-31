@@ -22,24 +22,24 @@ namespace test.Controllers
         private ReportsService _reportsService;
 
         [HttpGet("shop")]
-        public ShopReport CreateShopReport([FromQuery] string IdNumber)
+        public ActionResult<ShopReport> CreateShopReport([FromQuery] string IdNumber)
         {
-            return _reportsService.BuildShopReport(IdNumber);
+            return Ok(_reportsService.BuildShopReport(IdNumber));
         }
         [HttpGet("client")]
-        public ClientReport CreateClientReport([FromQuery] string IdNumber)
+        public ActionResult<ClientReport> CreateClientReport([FromQuery] string IdNumber)
         {
-            return _reportsService.BuildClientReport(IdNumber);
+            return Ok(_reportsService.BuildClientReport(IdNumber));
         }
         [HttpGet("repairs")]
-        public RepairsReport CreateRepairsReport([FromBody] string IdNumber, DateTime start, DateTime end)
+        public ActionResult<RepairsReport> CreateRepairsReport([FromBody] string IdNumber, DateTime start, DateTime end)
         {
-            return _reportsService.BuildRepairsReport(IdNumber, start, end);
+            return Ok(_reportsService.BuildRepairsReport(IdNumber, start, end));
         }
         [HttpGet("vehicle")]
-        public VehicleReport CreateVehicleReport([FromQuery] string idNumber)
+        public ActionResult<VehicleReport> CreateVehicleReport([FromQuery] string idNumber)
         {
-            return _reportsService.BuildVehiclesReport(idNumber);
+            return Ok(_reportsService.BuildVehiclesReport(idNumber));
         }
     }
 }

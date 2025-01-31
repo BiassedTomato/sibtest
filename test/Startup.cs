@@ -35,6 +35,11 @@ namespace test
 
             services.AddDbContext<AppContext>();
             services.AddScoped<ReportsService>();
+
+            services.AddScoped<ClientService>();
+            services.AddScoped<ShopService>();
+            services.AddScoped<RepairsService>();
+            services.AddScoped<VehicleService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

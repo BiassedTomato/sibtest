@@ -8,7 +8,6 @@ public class Vehicle
     /// <summary>
     /// Номер формата "A123BC"
     /// </summary>
-    public string CarNumber { get; set; }
-    public string Manufacturer { get; set; }
+    public string VehicleNumber { get; set; }
     public string Model { get; set; }
 }

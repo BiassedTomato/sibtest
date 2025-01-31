@@ -25,5 +25,18 @@ namespace test.Controllers
 
             _reportsService = reports;
         }
+
+        [HttpGet("report")]
+        public ActionResult<ClientReport> GetClientReport([FromQuery] string clientId)
+        {
+            var report = _reportsService.BuildClientReport(clientId);
+
+            if (report == null)
+            {
+                return NotFound($"No client with id {clientId}");
+            }
+
+            return Ok(report);
+        }
     }
 }
