@@ -29,6 +29,13 @@ public class AppContext : DbContext
         modelBuilder.Entity<Repair>().HasOne(x => x.Vehicle).WithMany();
 		modelBuilder.Entity<Repair>().HasOne(x => x.RepairType).WithMany();
 
+		modelBuilder.Entity<Shop>().HasData(new Shop()
+        {
+            Id = Guid.NewGuid(),
+            Name = "СТО 'Акула'",
+            IdNumber = "1237873535"
+        });
+
         modelBuilder.Entity<RepairType>().HasData(
             new RepairType()
             {
