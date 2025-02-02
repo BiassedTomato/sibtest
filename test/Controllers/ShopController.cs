@@ -9,59 +9,72 @@ using Microsoft.Extensions.Logging;
 
 namespace test.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class ShopController : ControllerBase
-    {
-        private readonly ILogger<ShopController> _logger;
-        private readonly ClientService _clientService;
-        private readonly VehicleService _vehicleService;
-        private readonly ReportsService _reportService;
-        private readonly RepairsService _repairService;
+	[ApiController]
+	[Route("[controller]")]
+	public class ShopController : ControllerBase
+	{
+		private readonly ILogger<ShopController> _logger;
+		private readonly ClientService _clientService;
+		private readonly VehicleService _vehicleService;
+		private readonly ReportsService _reportService;
+		private readonly RepairsService _repairService;
 
-        [HttpPost("registerClient")]
-        public void RegisterClient([FromBody] ClientRegisterDTO register)
-        {
-            _clientService.CreateClient(register.FirstName, register.LastName, register.ClientNumber, register.ShopNumber);
-        }
+		[HttpPost("registerClient")]
+		public void RegisterClient([FromBody] ClientRegisterDTO register)
+		{
+			_clientService.CreateClient(register.FirstName, register.LastName, register.ClientNumber, register.ShopNumber);
+		}
 
-        [HttpPost("addVehicles")]
-        public void AddVehicles([FromBody] IEnumerable<VehicleDTO> vehicles)
-        {
-            _vehicleService.RegisterVehicles(vehicles);
-        }
+		[HttpPost("addVehicles")]
+		public void AddVehicles([FromBody] IEnumerable<VehicleDTO> vehicles)
+		{
+			_vehicleService.RegisterVehicles(vehicles);
+		}
 
-        [HttpPost("addVehicle")]
-        public void AddVehicle([FromBody] VehicleDTO vehicle)
-        {
-            _vehicleService.RegisterVehicle(vehicle);
-        }
+		[HttpPost("createRepair")]
+		public ActionResult<Repair> CreateRepair(RepairDTO repair)
+		{
+			return Ok(_repairService.CreateRepair(repair.ClientNumber, repair.VehicleNumber, repair.Cost, repair.Mileage, repair.RepairType));
+		}
 
-        [HttpPatch("changeRepairStatus")]
-        public void ChangeStatus(Guid repairId, int status)
-        {
-            _repairService.ChangeRepairStatus(repairId, (RepairStatus)status);
-        }
+		[HttpPost("addVehicle")]
+		public void AddVehicle([FromBody] VehicleDTO vehicle)
+		{
+			_vehicleService.RegisterVehicle(vehicle);
+		}
 
-        [HttpGet("repairs")]
-        public ActionResult<IEnumerable<Repair>> GetRepairsList([FromQuery] string clientId)
-        {
-            return Ok(_repairService.GetClientRepairs(clientId));
-        }
+		[HttpPatch("changeRepairStatus")]
+		public void ChangeStatus(Guid repairId, int status)
+		{
+			if (status == (int)RepairStatus.Cancelled || status == (int)RepairStatus.Finished)
+			{
+				_repairService.FinishRepair(repairId, (RepairStatus)status);
+			}
+			else
+			{
+				_repairService.ChangeRepairStatus(repairId, (RepairStatus)status);
+			}
+		}
 
-        public ShopController(ClientService clientService, VehicleService vehicleService, ReportsService reportsService, RepairsService repairsService, ILogger<ShopController> logger)
-        {
-            _logger = logger;
-            _clientService = clientService;
-            _vehicleService = vehicleService;
-            _reportService = reportsService;
-            _repairService = repairsService;
-        }
+		[HttpGet("repairs")]
+		public ActionResult<IEnumerable<Repair>> GetRepairsList([FromQuery] string clientId)
+		{
+			return Ok(_repairService.GetClientRepairs(clientId));
+		}
 
-        [HttpGet("report")]
-        public ActionResult<ShopReport> GetShopReport(string shopId)
-        {
-            return Ok(_reportService.BuildShopReport(shopId));
-        }
-    }
+		public ShopController(ClientService clientService, VehicleService vehicleService, ReportsService reportsService, RepairsService repairsService, ILogger<ShopController> logger)
+		{
+			_logger = logger;
+			_clientService = clientService;
+			_vehicleService = vehicleService;
+			_reportService = reportsService;
+			_repairService = repairsService;
+		}
+
+		[HttpGet("report")]
+		public ActionResult<ShopReport> GetShopReport(string shopId)
+		{
+			return Ok(_reportService.BuildShopReport(shopId));
+		}
+	}
 }

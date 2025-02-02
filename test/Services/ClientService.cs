@@ -18,7 +18,7 @@ public class ClientService
 
         if (includeShop)
         {
-            clients.Include(x => x.Shop);
+            return clients.Include(x => x.Shop).FirstOrDefault(x => x.IdNumber == clientNumber);
         }
 
         return clients.FirstOrDefault(x => x.IdNumber == clientNumber);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,18 +26,18 @@ namespace test
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+		{
 
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "test", Version = "v1" });
-            });
+			services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+			services.AddSwaggerGen(c =>
+			{
+				c.SwaggerDoc("v1", new OpenApiInfo { Title = "test", Version = "v1" });
+			});
 
-            services.AddDbContext<AppContext>();
-            services.AddScoped<ReportsService>();
+			services.AddDbContext<AppContext>();
+			services.AddScoped<ReportsService>();
 
-            services.AddScoped<ClientService>();
+			services.AddScoped<ClientService>();
             services.AddScoped<ShopService>();
             services.AddScoped<RepairsService>();
             services.AddScoped<VehicleService>();

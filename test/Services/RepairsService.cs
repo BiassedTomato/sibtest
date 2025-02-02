@@ -17,25 +17,36 @@ public class RepairsService
         _clientService = clientService;
     }
 
-    public Repair CreateRepair(string clientId, float cost, float mileage, Guid repairType)
+    public Repair CreateRepair(string clientId, string vehicleNumber, float cost, float mileage, Guid repairType)
     {
         var client = _clientService.GetClient(clientId, true);
 
-        var repair = new Repair()
-        {
-            Client = client,
-            Cost = cost,
-            Mileage = mileage,
-            Shop = client.Shop,
+		var repair = new Repair()
+		{
+			Client = client,
+			Cost = cost,
+			Mileage = mileage,
+			Shop = client.Shop,
+			Vehicle = _ctx.Vehicles.FirstOrDefault(x => x.VehicleNumber == vehicleNumber),
 
-            RepairType = _ctx.RepairTypes.First(x => x.Id == repairType)
-        };
+			RepairType = _ctx.RepairTypes.First(x => x.Id == repairType)
+		};
 
-        _ctx.Repairs.Add(repair);
+		_ctx.Repairs.Add(repair);
 
         _ctx.SaveChanges();
 
         return repair;
+    }
+
+    public void FinishRepair(Guid repairId, RepairStatus status)
+    {
+        var repair=_ctx.Repairs.FirstOrDefault(x=>x.Id == repairId);
+
+        repair.FinishedDate = DateTime.Now;
+		repair.RepairStatus = status;
+
+		_ctx.SaveChanges();
     }
 
     public IEnumerable<Repair> GetClientRepairs(string clientId)
