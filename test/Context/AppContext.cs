@@ -3,11 +3,6 @@ using Microsoft.EntityFrameworkCore;
 
 public class AppContext : DbContext
 {
-    public AppContext()
-    {
-        Database.EnsureCreated();
-    }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var connection = "Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=postgres;";
