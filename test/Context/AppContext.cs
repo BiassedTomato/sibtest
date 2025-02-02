@@ -25,8 +25,9 @@ public class AppContext : DbContext
         modelBuilder.Entity<Client>().HasOne(x => x.Shop).WithMany(x => x.Clients);
 
         modelBuilder.Entity<Repair>().HasOne(x => x.Shop).WithMany(x => x.Repairs);
-        modelBuilder.Entity<Repair>().HasOne(x => x.Vehicle);
-        modelBuilder.Entity<Repair>().HasOne(x => x.RepairType);
+		
+        modelBuilder.Entity<Repair>().HasOne(x => x.Vehicle).WithMany();
+		modelBuilder.Entity<Repair>().HasOne(x => x.RepairType).WithMany();
 
         modelBuilder.Entity<RepairType>().HasData(
             new RepairType()
