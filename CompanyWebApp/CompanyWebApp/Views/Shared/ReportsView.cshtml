@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Report>
+
+@{
+	ViewData["Title"] = "Reports";
+}
+
+<h2>Reports</h2>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Cost</th>
+			<th>Date</th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (Model != null)
+		{
+			@foreach (var report in Model)
+			{
+				<tr>
+					<td>@report.Name</td>
+					<td>@report.Cost.ToString("C")</td>
+					<td>@report.Date.ToShortDateString()</td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>
