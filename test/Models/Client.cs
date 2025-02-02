@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 public class Client
 {
@@ -7,6 +8,7 @@ public class Client
     public string FirstName { get; set; }
     public string LastName { get; set; }
 
+    [Required]
     public Shop Shop { get; set; }
 
     public ICollection<Vehicle> Vehicles { get; set; }

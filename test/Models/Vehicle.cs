@@ -1,8 +1,11 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 public class Vehicle
 {
     public Guid Id { get; set; }
+
+    [Required]
     public Client Owner { get; set; }
 
     /// <summary>
