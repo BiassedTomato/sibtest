@@ -12,16 +12,16 @@ public class ReportsService
         _logger = logger;
     }
 
-    public ShopReport BuildShopReport(string serviceId)
+    public ShopReport BuildShopReport(string shopNumber)
     {
-        var service = _ctx.Shops.FirstOrDefault(x => x.IdNumber == serviceId);
+        var service = _ctx.Shops.FirstOrDefault(x => x.IdNumber == shopNumber);
 
         if (service == null)
         {
             return null;
         }
 
-        var repairs = _ctx.Repairs.Where(x => x.Shop == service);
+        var repairs = _ctx.Repairs.Where(x => x.Shop == service).ToList();
 
         return new()
         {
@@ -31,9 +31,9 @@ public class ReportsService
         };
     }
 
-    public ClientReport BuildClientReport(string clientId)
+    public ClientReport BuildClientReport(string clientNumber)
     {
-        var client = _ctx.Clients.FirstOrDefault(x => x.IdNumber == clientId);
+        var client = _ctx.Clients.FirstOrDefault(x => x.IdNumber == clientNumber);
 
         if (client == null)
         {
@@ -45,9 +45,9 @@ public class ReportsService
         return new() { Repairs = repairs, TotalCount = repairs.Count(), TotalSum = repairs.Sum(x => x.Cost) };
     }
 
-    public VehicleReport BuildVehiclesReport(string vehicleId)
+    public VehicleReport BuildVehiclesReport(string vehicleNumber)
     {
-        var vehicle = _ctx.Vehicles.FirstOrDefault(x => x.VehicleNumber == vehicleId);
+        var vehicle = _ctx.Vehicles.FirstOrDefault(x => x.VehicleNumber == vehicleNumber);
 
         if (vehicle == null)
         {
@@ -60,9 +60,9 @@ public class ReportsService
         return new() { Repairs = repairs, TotalSum = repairs.Sum(x => x.Cost) };
     }
 
-    public RepairsReport BuildRepairsReport(string serviceId, DateTime start, DateTime end)
+    public RepairsReport BuildRepairsReport(string shopNumber, DateTime start, DateTime end)
     {
-        var service = _ctx.Shops.FirstOrDefault(x => x.IdNumber == serviceId);
+        var service = _ctx.Shops.FirstOrDefault(x => x.IdNumber == shopNumber);
 
         if (service == null)
         {
@@ -73,7 +73,8 @@ public class ReportsService
             x => x.Shop == service &&
                 x.FinishedDate != null &&
                 x.FinishedDate >= start &&
-                x.FinishedDate <= end);
+                x.FinishedDate <= end)
+        .ToList();
 
         return new() { Repairs = repairs, TotalCount = repairs.Count(), TotalSum = repairs.Sum(x => x.Cost) };
     }

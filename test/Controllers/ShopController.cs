@@ -22,7 +22,7 @@ namespace test.Controllers
         [HttpPost("registerClient")]
         public void RegisterClient([FromBody] ClientRegisterDTO register)
         {
-            _clientService.CreateClient(register.FirstName, register.LastName, register.IdNumber, register.ShopId);
+            _clientService.CreateClient(register.FirstName, register.LastName, register.ClientNumber, register.ShopNumber);
         }
 
         [HttpPost("addVehicles")]

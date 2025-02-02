@@ -12,9 +12,9 @@ public class ClientService
         _shopService = shopService;
     }
 
-    public Client? GetClient(string clientId)
+    public Client? GetClient(string clientNumber)
     {
-        return _ctx.Clients.FirstOrDefault(x => x.IdNumber == clientId);
+        return _ctx.Clients.FirstOrDefault(x => x.IdNumber == clientNumber);
     }
 
     public Client CreateClient(string firstName, string lastName, string idNumber, string shopId)

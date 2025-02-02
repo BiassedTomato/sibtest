@@ -16,7 +16,7 @@ public class VehicleService
 
     public Vehicle RegisterVehicle(VehicleDTO dto)
     {
-        var vehicle = new Vehicle() { Owner = _clientService.GetClient(dto.OwnerId), VehicleNumber = dto.VehicleNumber, Model = dto.Model };
+        var vehicle = new Vehicle() { Owner = _clientService.GetClient(dto.ClientNumber), VehicleNumber = dto.VehicleNumber, Model = dto.Model };
 
         _context.Vehicles.Add(vehicle);
 
@@ -29,7 +29,7 @@ public class VehicleService
     {
         foreach (var vehicleDTO in vehicles)
         {
-            var vehicle = new Vehicle() { Owner = _clientService.GetClient(vehicleDTO.OwnerId), VehicleNumber = vehicleDTO.VehicleNumber, Model = vehicleDTO.Model };
+            var vehicle = new Vehicle() { Owner = _clientService.GetClient(vehicleDTO.ClientNumber), VehicleNumber = vehicleDTO.VehicleNumber, Model = vehicleDTO.Model };
             _context.Vehicles.Add(vehicle);
         }
 
