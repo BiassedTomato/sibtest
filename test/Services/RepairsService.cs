@@ -17,14 +17,22 @@ public class RepairsService
         _clientService = clientService;
     }
 
-    public Repair CreateRepair(string clientId, float cost, string shopId, Guid repairType)
+    public Repair CreateRepair(string clientId, float cost, float mileage, Guid repairType)
     {
+        var client = _clientService.GetClient(clientId, true);
+
         var repair = new Repair()
         {
-            Client = _clientService.GetClient(clientId),
+            Client = client,
             Cost = cost,
-            Shop = _shopService.GetShop(shopId),
+            Mileage = mileage,
+            Shop = client.Shop,
+
+            RepairType = _ctx.RepairTypes.First(x => x.Id == repairType)
         };
+
+        _ctx.Repairs.Add(repair);
+
         _ctx.SaveChanges();
 
         return repair;
