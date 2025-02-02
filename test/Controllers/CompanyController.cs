@@ -26,11 +26,20 @@ namespace test.Controllers
         {
             return Ok(_reportsService.BuildShopReport(IdNumber));
         }
+
         [HttpGet("client")]
         public ActionResult<ClientReport> CreateClientReport([FromQuery] string IdNumber)
         {
-            return Ok(_reportsService.BuildClientReport(IdNumber));
+            var report = _reportsService.BuildClientReport(IdNumber);
+
+            if (report == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(report);
         }
+
         [HttpGet("repairs")]
         public ActionResult<RepairsReport> CreateRepairsReport([FromBody] string IdNumber, DateTime start, DateTime end)
         {
