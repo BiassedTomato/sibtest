@@ -34,7 +34,14 @@ namespace test.Controllers
 		[HttpPost("createRepair")]
 		public ActionResult<Repair> CreateRepair(RepairDTO repair)
 		{
-			return Ok(_repairService.CreateRepair(repair.ClientNumber, repair.VehicleNumber, repair.Cost, repair.Mileage, repair.RepairType));
+			var nRepair = _repairService.CreateRepair(repair.ClientNumber, repair.VehicleNumber, repair.Cost, repair.Mileage, repair.RepairType);
+
+			if (nRepair != null)
+			{
+				return Ok();
+
+			}
+			return BadRequest();
 		}
 
 		[HttpPost("addVehicle")]
@@ -72,9 +79,9 @@ namespace test.Controllers
 		}
 
 		[HttpGet("report")]
-		public ActionResult<ShopReport> GetShopReport(string shopId)
+		public ActionResult<ShopReport> GetShopReport([FromQuery]string shopId, DateTime start, DateTime end)
 		{
-			return Ok(_reportService.BuildShopReport(shopId));
+			return Ok(_reportService.BuildShopReport(shopId, start, end));
 		}
 	}
 }

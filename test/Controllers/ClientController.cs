@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -15,17 +16,17 @@ namespace test.Controllers
         {
             _logger = logger;
 
-            _reportsService = reports;
-        }
+			_reportsService = reports;
+		}
 
-        [HttpGet("report")]
-        public ActionResult<ClientReport> GetClientReport([FromQuery] string clientId)
-        {
-            var report = _reportsService.BuildClientReport(clientId);
+		[HttpGet("report")]
+		public ActionResult<ClientReport> GetClientReport([FromQuery] string clientId, DateTime start, DateTime end)
+		{
+			var report = _reportsService.BuildClientReport(clientId, start, end);
 
-            if (report == null)
-            {
-                return NotFound($"No client with id {clientId}");
+			if (report == null)
+			{
+				return NotFound($"No client with id {clientId}");
             }
 
             return Ok(report);

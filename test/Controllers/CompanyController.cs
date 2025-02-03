@@ -21,23 +21,30 @@ namespace test.Controllers
 
         private ReportsService _reportsService;
 
-        [HttpGet("shop")]
-        public ActionResult<ShopReport> CreateShopReport([FromQuery] string IdNumber)
-        {
-            return Ok(_reportsService.BuildShopReport(IdNumber));
-        }
+		[HttpGet("shop")]
+		public ActionResult<ShopReport> CreateShopReport([FromQuery] string shopNumber, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+		{
+			var report = _reportsService.BuildShopReport(shopNumber, startDate, endDate);
 
-        [HttpGet("client")]
-        public ActionResult<ClientReport> CreateClientReport([FromQuery] string IdNumber)
-        {
-            var report = _reportsService.BuildClientReport(IdNumber);
+			if (report == null)
+			{
+				return NotFound();
+			}
 
-            if (report == null)
-            {
-                return BadRequest();
-            }
+			return Ok(report);
+		}
 
-            return Ok(report);
+		[HttpGet("client")]
+		public ActionResult<ClientReport> CreateClientReport([FromQuery] string IdNumber, DateTime start, DateTime end)
+		{
+			var report = _reportsService.BuildClientReport(IdNumber, start, end);
+
+			if (report == null)
+			{
+				return BadRequest();
+			}
+
+			return Ok(report);
         }
 
         [HttpGet("repairs")]
@@ -45,10 +52,11 @@ namespace test.Controllers
         {
             return Ok(_reportsService.BuildRepairsReport(IdNumber, start, end));
         }
+
         [HttpGet("vehicle")]
-        public ActionResult<VehicleReport> CreateVehicleReport([FromQuery] string idNumber)
+        public ActionResult<VehicleReport> CreateVehicleReport([FromQuery] string idNumber, DateTime start, DateTime end)
         {
-            return Ok(_reportsService.BuildVehiclesReport(idNumber));
+            return Ok(_reportsService.BuildVehiclesReport(idNumber, start, end));
         }
     }
 }

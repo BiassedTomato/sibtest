@@ -16,10 +16,10 @@ public class ClientService
     {
         if (includeShop)
         {
-            return _ctx.Clients.AsNoTracking().Include(x => x.Shop).FirstOrDefault(x => x.IdNumber == clientNumber);
+			return _ctx.Clients.Include(x => x.Shop).FirstOrDefault(x => x.IdNumber == clientNumber);
         }
 
-        return _ctx.Clients.AsNoTracking().FirstOrDefault(x => x.IdNumber == clientNumber);
+        return _ctx.Clients.FirstOrDefault(x => x.IdNumber == clientNumber);
     }
 
     public Client CreateClient(string firstName, string lastName, string idNumber, string shopId)
