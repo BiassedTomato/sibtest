@@ -15,11 +15,11 @@ public class RepairsService
         _ctx = ctx;
         _shopService = shopService;
         _clientService = clientService;
-    }
+	}
 
-    public Repair CreateRepair(string clientId, string vehicleNumber, float cost, float mileage, Guid repairType)
-    {
-        var client = _clientService.GetClient(clientId, true);
+	public Repair CreateRepair(string clientId, string vehicleNumber, float cost, float mileage, Guid repairType)
+	{
+		var client = _clientService.GetClient(clientId, true);
 
 		var repair = new Repair()
 		{
@@ -43,7 +43,7 @@ public class RepairsService
     {
         var repair=_ctx.Repairs.FirstOrDefault(x=>x.Id == repairId);
 
-        repair.FinishedDate = DateTime.Now;
+        repair.FinishedDate = DateTime.Now.Date;
 		repair.RepairStatus = status;
 
 		_ctx.SaveChanges();
