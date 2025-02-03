@@ -14,14 +14,12 @@ public class ClientService
 
     public Client? GetClient(string clientNumber, bool includeShop = false)
     {
-        var clients = _ctx.Clients;
-
         if (includeShop)
         {
-            return clients.Include(x => x.Shop).FirstOrDefault(x => x.IdNumber == clientNumber);
+            return _ctx.Clients.AsNoTracking().Include(x => x.Shop).FirstOrDefault(x => x.IdNumber == clientNumber);
         }
 
-        return clients.FirstOrDefault(x => x.IdNumber == clientNumber);
+        return _ctx.Clients.AsNoTracking().FirstOrDefault(x => x.IdNumber == clientNumber);
     }
 
     public Client CreateClient(string firstName, string lastName, string idNumber, string shopId)
@@ -34,7 +32,25 @@ public class ClientService
         return client;
     }
 
+	public void UpdateClient(string idNumber, ClientRegisterDTO dto)
+	{
+		var client = _ctx.Clients.First(x => x.IdNumber == idNumber);
 
+		client.IdNumber = dto.ClientNumber;
+		client.LastName = dto.LastName;
+		client.FirstName = dto.FirstName;
+
+		_ctx.SaveChanges();
+	}
+
+	public void DeleteClient(string idNumber)
+	{
+		var client = _ctx.Clients.First(x => x.IdNumber == idNumber);
+
+        _ctx.Clients.Remove(client);
+
+        _ctx.SaveChanges();
+    }
 
     public IEnumerable<Client>? GetShopClients(string shopId)
     {

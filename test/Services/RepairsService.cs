@@ -49,9 +49,27 @@ public class RepairsService
 		_ctx.SaveChanges();
     }
 
-    public IEnumerable<Repair> GetClientRepairs(string clientId)
+    public Repair GetRepair(Guid id)
     {
-        return _ctx.Clients.Include(x => x.Repairs).FirstOrDefault(x => x.IdNumber == clientId).Repairs;
+        return _ctx.Repairs.AsNoTracking().FirstOrDefault(x => x.Id == id);
+    }
+
+    /// <summary>
+    /// Полностью удаляет запись о ремонте из базы. В общем случае ремонт должен закрываться с нужным статусом а не удаляться.
+    /// </summary>
+    /// <param name="id"></param>
+	public void DeleteRepair(Guid id)
+	{
+		var repair = _ctx.Repairs.First(x => x.Id == id);
+
+		_ctx.Repairs.Remove(repair);
+
+		_ctx.SaveChanges();
+	}
+
+	public IEnumerable<Repair> GetClientRepairs(string clientId)
+    {
+        return _ctx.Clients.AsNoTracking().Include(x => x.Repairs).FirstOrDefault(x => x.IdNumber == clientId).Repairs;
     }
 
     public void ChangeRepairStatus(Guid id, RepairStatus status)
@@ -59,5 +77,4 @@ public class RepairsService
         _ctx.Repairs.First(x => x.Id == id).RepairStatus = status;
         _ctx.SaveChanges();
     }
-
 }
