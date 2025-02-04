@@ -4,7 +4,7 @@
         Title="Repair Management App" Height="450" Width="800">
     <Grid>
         <TabControl>
-            <TabItem Header="Register Client">
+            <TabItem Header="Регистрация клиента">
                 <StackPanel Margin="10">
                     <Label Content="Имя:"/>
                     <TextBox x:Name="FirstNameTextBox" Margin="0,0,0,10"/>
@@ -28,6 +28,22 @@
                 </StackPanel>
             </TabItem>
 
+            <TabItem Header="Управление типами услуг">
+                <StackPanel Margin="10">
+                    <Label Content="Услуги:"/>
+                    <ListBox x:Name="RepairTypesListBox" Margin="0,0,0,10" DisplayMemberPath="Name" SelectionChanged="RepairTypesListBox_SelectionChanged"/>
+                    <Label Content="Наименование услуги:"/>
+                    <TextBox x:Name="RepairTypeNameTextBox" Margin="0,0,0,10"/>
+                    <Label Content="Стоимость:"/>
+                    <TextBox x:Name="RepairTypeCostTextBox" Text="0"  Margin="0,0,0,10"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button Content="Add" Click="AddRepairType_Click" Margin="0,0,10,0"/>
+                        <Button Content="Update" Click="UpdateRepairType_Click" Margin="0,0,10,0"/>
+                        <Button Content="Delete" Click="DeleteRepairType_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+
             <TabItem Header="Создать услугу">
                 <StackPanel Margin="10">
                     <Label Content="ИНН клиента:"/>
@@ -47,21 +63,10 @@
                     <TextBox x:Name="StatusClientIdTextBox" Margin="0,0,0,10"/>
                     <Button Content="Найти активные услуги" Click="FetchRepairsForStatus_Click"/>
                     <Label Content="Активные услуги клиента:"/>
-                    <ComboBox x:Name="RepairStatusComboBox" Margin="0,0,0,10" DisplayMemberPath="Description"/>
+                    <ComboBox x:Name="RepairStatusComboBox" DisplayMemberPath="RepairTypeName" SelectedValuePath="Id" Margin="0,0,0,10"/>
                     <Label Content="Статус:"/>
-                    <ComboBox x:Name="StatusComboBox" Margin="0,0,0,10"/>
+                    <ComboBox x:Name="StatusComboBox" DisplayMemberPath="Name" SelectedValuePath="Id" Margin="0,0,0,10"/>
                     <Button Content="Поменять статус" Click="ChangeRepairStatus_Click"/>
-                </StackPanel>
-            </TabItem>
-
-            <TabItem Header="Завершить услугу">
-                <StackPanel Margin="10">
-                    <Label Content="ИНН клиента"/>
-                    <TextBox x:Name="FinishClientIdTextBox" Margin="0,0,0,10"/>
-                    <Button Content="Найти услуги" Click="FetchRepairsForFinish_Click"/>
-                    <Label Content="Активные услуги клиента:"/>
-                    <ComboBox x:Name="RepairFinishComboBox" Margin="0,0,0,10" DisplayMemberPath="Description"/>
-                    <Button Content="Завершить услугу" Click="FinishRepair_Click"/>
                 </StackPanel>
             </TabItem>
         </TabControl>
