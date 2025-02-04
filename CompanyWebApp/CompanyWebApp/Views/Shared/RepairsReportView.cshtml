@@ -1,0 +1,61 @@
+﻿@model CompanyWebApp.Models.ReportData.RepairsReport
+
+@{
+	ViewData["Title"] = "Отчет по услугам";
+}
+
+<h2>Отчет по услугам</h2>
+@if (Model != null)
+{
+	<p>Отчет по услугам обслуживания транспортного средства</p>
+}
+
+<form method="get" action="@Url.Action("repairs")">
+	<div>
+		<label for="startDate">Start Date:</label>
+		<input type="date" id="startDate" name="startDate" value="@Context.Request.Query["startDate"]" />
+	</div>
+	<div>
+		<label for="endDate">End Date:</label>
+		<input type="date" id="endDate" name="endDate" value="@Context.Request.Query["endDate"]" />
+	</div>
+	<button type="submit">Сформировать</button>
+</form>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Имя клиента</th>
+			<th>ИНН клиента</th>
+			<th>Наименование сервиса</th>
+			<th>ИНН сервиса</th>
+			<th>Модель ТС</th>
+			<th>Стоимость услуги</th>
+			<th>Тип услуги</th>
+			<th>Дата завершения</th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (Model != null)
+		{
+			@foreach (var repair in Model.Repairs)
+			{
+				<tr>
+					<td>@repair.ClientName</td>
+					<td>@repair.ClientId</td>
+					<td>@repair.ShopName</td>
+					<td>@repair.ShopId</td>
+					<td>@repair.VehicleModel</td>
+					<td>@repair.Cost.ToString("C")</td>
+					<td>@repair.ServiceType</td>
+					<td>@repair.FinishedDate.ToShortDateString()</td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>
+@if (Model != null)
+{
+	<p><strong>Всего услуг оказано:</strong> @Model.TotalCount</p>
+	<p><strong>Итого:</strong> @Model.TotalSum.ToString("C")</p>
+}
