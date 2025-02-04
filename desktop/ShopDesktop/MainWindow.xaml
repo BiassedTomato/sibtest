@@ -1,0 +1,69 @@
+﻿<Window x:Class="RepairManagementApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Repair Management App" Height="450" Width="800">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Register Client">
+                <StackPanel Margin="10">
+                    <Label Content="Имя:"/>
+                    <TextBox x:Name="FirstNameTextBox" Margin="0,0,0,10"/>
+                    <Label Content="Фамилия:"/>
+                    <TextBox x:Name="LastNameTextBox" Margin="0,0,0,10"/>
+                    <Label Content="ИНН:"/>
+                    <TextBox x:Name="IdNumberTextBox" Margin="0,0,0,10"/>
+                    <Button Content="Зарегистрировать клиента" Click="RegisterClient_Click"/>
+                </StackPanel>
+            </TabItem>
+            
+            <TabItem Header="Добавить ТС">
+                <StackPanel Margin="10">
+                    <Label Content="ИНН клиента:"/>
+                    <TextBox x:Name="AssignClientIdTextBox" Margin="0,0,0,10"/>
+                    <Label Content="Модель ТС:"/>
+                    <TextBox x:Name="VehicleModelTextBox" Margin="0,0,0,10"/>
+                    <Label Content="Номер ТС:"/>
+                    <TextBox x:Name="VehicleNumberTextBox" Margin="0,0,0,10"/>
+                    <Button Content="Добавить ТС" Click="AssignVehicle_Click"/>
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="Создать услугу">
+                <StackPanel Margin="10">
+                    <Label Content="ИНН клиента:"/>
+                    <TextBox x:Name="RepairClientIdTextBox" Margin="0,0,0,10"/>
+                    <Button Content="Найти ТС клиента" Click="FetchVehicles_Click"/>
+                    <Label Content="Выбрать ТС:"/>
+                    <ComboBox x:Name="VehicleComboBox" Margin="0,0,0,10" DisplayMemberPath="Model" SelectedValuePath="VehicleNumber"/>
+                    <Label Content="Тип услуги:"/>
+                    <ComboBox x:Name="RepairTypeComboBox" Margin="0,0,0,10" DisplayMemberPath="Name" SelectedValuePath="Id"/>
+                    <Button Content="Начать услугу" Click="CreateRepairEntry_Click"/>
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="Поменять статус услуги">
+                <StackPanel Margin="10">
+                    <Label Content="ИНН клиента:"/>
+                    <TextBox x:Name="StatusClientIdTextBox" Margin="0,0,0,10"/>
+                    <Button Content="Найти активные услуги" Click="FetchRepairsForStatus_Click"/>
+                    <Label Content="Активные услуги клиента:"/>
+                    <ComboBox x:Name="RepairStatusComboBox" Margin="0,0,0,10" DisplayMemberPath="Description"/>
+                    <Label Content="Статус:"/>
+                    <ComboBox x:Name="StatusComboBox" Margin="0,0,0,10"/>
+                    <Button Content="Поменять статус" Click="ChangeRepairStatus_Click"/>
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="Завершить услугу">
+                <StackPanel Margin="10">
+                    <Label Content="ИНН клиента"/>
+                    <TextBox x:Name="FinishClientIdTextBox" Margin="0,0,0,10"/>
+                    <Button Content="Найти услуги" Click="FetchRepairsForFinish_Click"/>
+                    <Label Content="Активные услуги клиента:"/>
+                    <ComboBox x:Name="RepairFinishComboBox" Margin="0,0,0,10" DisplayMemberPath="Description"/>
+                    <Button Content="Завершить услугу" Click="FinishRepair_Click"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
