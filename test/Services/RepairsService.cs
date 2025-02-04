@@ -71,9 +71,11 @@ public class RepairsService
 
 		return _ctx.Repairs.Include(x => x.Client).Include(x=>x.Vehicle).Where(x => x.Client == client).Select(x=>new RepairDTO()
 		{
+			Id=x.Id,
 			ClientNumber=x.Client.IdNumber,
 			Cost=x.Cost,
 			RepairType=x.RepairType.Id,
+			RepairTypeName=x.RepairType.Name,
 			VehicleNumber=x.Vehicle.VehicleNumber,
 		});
 	}

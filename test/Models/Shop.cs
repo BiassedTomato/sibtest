@@ -13,5 +13,7 @@ public class Shop
 
     public IEnumerable<Client> Clients { get; set; }
 
+    public IEnumerable<RepairType> RepairTypes { get; set; }
+
     public IEnumerable<Repair> Repairs { get; set; }
 }
