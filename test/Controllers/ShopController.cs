@@ -19,68 +19,6 @@ namespace test.Controllers
 		private readonly ReportsService _reportService;
 		private readonly RepairsService _repairService;
 
-		[HttpPost("registerClient")]
-		public void RegisterClient([FromBody] ClientRegisterDTO register)
-		{
-			_clientService.CreateClient(register.FirstName, register.LastName, register.ClientNumber, register.ShopNumber);
-		}
-
-		[HttpPost("addVehicles")]
-		public void AddVehicles([FromBody] IEnumerable<VehicleDTO> vehicles)
-		{
-			_vehicleService.RegisterVehicles(vehicles);
-		}
-
-		[HttpPost("createRepair")]
-		public ActionResult<Repair> CreateRepair(RepairDTO repair)
-		{
-			var nRepair = _repairService.CreateRepair(repair.ClientNumber, repair.VehicleNumber, repair.Cost, repair.Mileage, repair.RepairType);
-
-			if (nRepair != null)
-			{
-				return Ok();
-
-			}
-			return BadRequest();
-		}
-
-		[HttpPost("addVehicle")]
-		public void AddVehicle([FromBody] VehicleDTO vehicle)
-		{
-			_vehicleService.RegisterVehicle(vehicle);
-		}
-
-		[HttpGet("getRepairTypes")]
-		public ActionResult GetRepairTypes()
-		{
-			return Ok(_repairService.GetRepairTypes());
-		}
-
-		[HttpPatch("changeRepairStatus")]
-		public void ChangeStatus(Guid repairId, int status)
-		{
-			if (status == (int)RepairStatus.Cancelled || status == (int)RepairStatus.Finished)
-			{
-				_repairService.FinishRepair(repairId, (RepairStatus)status);
-			}
-			else
-			{
-				_repairService.ChangeRepairStatus(repairId, (RepairStatus)status);
-			}
-		}
-
-		[HttpGet("repairs")]
-		public ActionResult<IEnumerable<RepairDTO>> GetRepairsList([FromQuery] string clientId)
-		{
-			return Ok(_repairService.GetClientRepairs(clientId));
-		}
-
-		[HttpGet("vehicles")]
-		public ActionResult<IEnumerable<VehicleDTO>> GetVehiclesList([FromQuery] string clientId)
-		{
-			return Ok(_vehicleService.GetClientVehicles(clientId));
-		}
-
 		public ShopController(ClientService clientService, VehicleService vehicleService, ReportsService reportsService, RepairsService repairsService, ILogger<ShopController> logger)
 		{
 			_logger = logger;
@@ -90,10 +28,148 @@ namespace test.Controllers
 			_repairService = repairsService;
 		}
 
-		[HttpGet("report")]
-		public ActionResult<ShopReport> GetShopReport([FromQuery]string shopId, DateTime start, DateTime end)
+		[HttpPost("registerClient")]
+		public IActionResult RegisterClient([FromBody] ClientRegisterDTO register)
 		{
-			return Ok(_reportService.BuildShopReport(shopId, start, end));
+			try
+			{
+				_clientService.CreateClient(register.FirstName, register.LastName, register.ClientNumber, register.ShopNumber);
+				return Ok();
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError($"Не удалось зарегистрировать клиента ({register}): \n{ex.Message}");
+				return StatusCode(500);
+			}
+		}
+
+		[HttpPost("addVehicles")]
+		public IActionResult AddVehicles([FromBody] IEnumerable<VehicleDTO> vehicles)
+		{
+			try
+			{
+				_vehicleService.RegisterVehicles(vehicles);
+				return Ok();
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError($"Не удалось добавить несколько транспортных средств: \n{ex.Message}");
+				return StatusCode(500);
+			}
+		}
+
+		[HttpPost("createRepair")]
+		public IActionResult CreateRepair(RepairDTO repair)
+		{
+			try
+			{
+				var nRepair = _repairService.CreateRepair(repair.ClientNumber, repair.VehicleNumber, repair.Cost, repair.Mileage, repair.RepairType);
+
+				if (nRepair != null)
+				{
+					return Ok();
+
+				}
+				return BadRequest();
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError($"Не удалось создать услугу: \n{ex.Message}");
+				return StatusCode(500);
+			}
+		}
+
+		[HttpPost("addVehicle")]
+		public IActionResult AddVehicle([FromBody] VehicleDTO vehicle)
+		{
+			try
+			{
+				_vehicleService.RegisterVehicle(vehicle);
+				return Ok();
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError($"Не удалось добавить ТС: \n{ex.Message}");
+				return StatusCode(500);
+			}
+		}
+
+		[HttpGet("getRepairTypes")]
+		public IActionResult GetRepairTypes()
+		{
+			try
+			{
+				return Ok(_repairService.GetRepairTypes());
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError($"Не удалось получить список типов услуг: \n{ex.Message}");
+				return StatusCode(500);
+			}
+		}
+
+		[HttpPatch("changeRepairStatus")]
+		public IActionResult ChangeStatus(Guid repairId, int status)
+		{
+			try
+			{
+				if (status == (int)RepairStatus.Cancelled || status == (int)RepairStatus.Finished)
+				{
+					_repairService.FinishRepair(repairId, (RepairStatus)status);
+				}
+				else
+				{
+					_repairService.ChangeRepairStatus(repairId, (RepairStatus)status);
+				}
+				return Ok();
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError($"Не удалось обновить статус услуги: \n{ex.Message}");
+				return StatusCode(500);
+			}
+		}
+
+		[HttpGet("repairs")]
+		public IActionResult GetRepairsList([FromQuery] string clientId)
+		{
+			try
+			{
+				return Ok(_repairService.GetClientRepairs(clientId));
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError($"Не удалось получить список услуг: \n{ex.Message}");
+				return StatusCode(500);
+			}
+		}
+
+		[HttpGet("vehicles")]
+		public IActionResult GetVehiclesList([FromQuery] string clientId)
+		{
+			try
+			{
+				return Ok(_vehicleService.GetClientVehicles(clientId));
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError($"Не удалось получить список ТС: \n{ex.Message}");
+				return StatusCode(500);
+			}
+		}
+
+		[HttpGet("report")]
+		public IActionResult GetShopReport([FromQuery] string shopId, DateTime start, DateTime end)
+		{
+			try
+			{
+				return Ok(_reportService.BuildShopReport(shopId, start, end));
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError($"Не удалось сформировать отчет по магазину: \n{ex.Message}");
+				return StatusCode(500);
+			}
 		}
 	}
 }

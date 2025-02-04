@@ -4,32 +4,40 @@ using Microsoft.Extensions.Logging;
 
 namespace test.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class ClientController : ControllerBase
-    {
-        private readonly ILogger<ClientController> _logger;
+	[ApiController]
+	[Route("[controller]")]
+	public class ClientController : ControllerBase
+	{
+		private readonly ILogger<ClientController> _logger;
+		private readonly ReportsService _reportsService;
 
-        private ReportsService _reportsService;
-
-        public ClientController(ReportsService reports, ILogger<ClientController> logger)
-        {
-            _logger = logger;
+		public ClientController(ReportsService reports, ILogger<ClientController> logger)
+		{
+			_logger = logger;
 
 			_reportsService = reports;
 		}
 
 		[HttpGet("report")]
-		public ActionResult<ClientReport> GetClientReport([FromQuery] string clientId, DateTime start, DateTime end)
+		public ActionResult<ClientReport> GetClientReport([FromQuery] string clientId, DateTime startDate, DateTime endDate)
 		{
-			var report = _reportsService.BuildClientReport(clientId, start, end);
-
-			if (report == null)
+			try
 			{
-				return NotFound($"No client with id {clientId}");
-            }
+				var report = _reportsService.BuildClientReport(clientId, startDate, endDate);
 
-            return Ok(report);
-        }
-    }
+				if (report == null)
+				{
+					_logger.LogError($"Не удалось сформировать отчет по клиенту параметрам: ИНН клиента {clientId}, дата начала {startDate}, дата окончания {endDate}.");
+					return BadRequest();
+				}
+
+				return Ok(report);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError($"Внутренняя ошибка создания отчета для клиента:\n {ex.Message}");
+				return StatusCode(500);
+			}
+		}
+	}
 }

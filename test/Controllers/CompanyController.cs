@@ -7,56 +7,107 @@ using Microsoft.Extensions.Logging;
 
 namespace test.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class CompanyController : ControllerBase
-    {
-        private readonly ILogger<CompanyController> _logger;
+	[ApiController]
+	[Route("[controller]")]
+	public class CompanyController : ControllerBase
+	{
+		private readonly ILogger<CompanyController> _logger;
 
-        public CompanyController(ReportsService reports, ILogger<CompanyController> logger)
-        {
-            _logger = logger;
-            _reportsService = reports;
-        }
+		public CompanyController(ReportsService reports, ILogger<CompanyController> logger)
+		{
+			_logger = logger;
+			_reportsService = reports;
+		}
 
-        private ReportsService _reportsService;
+		private ReportsService _reportsService;
 
 		[HttpGet("shop")]
 		public ActionResult<ShopReport> CreateShopReport([FromQuery] string idNumber, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
 		{
-			var report = _reportsService.BuildShopReport(idNumber, startDate, endDate);
-
-			if (report == null)
+			try
 			{
-				return NotFound();
-			}
+				var report = _reportsService.BuildShopReport(idNumber, startDate, endDate);
 
-			return Ok(report);
+				if (report == null)
+				{
+					_logger.LogError($"Не удалось сформировать отчет по сервисам по параметрам: ИНН сервиса {idNumber}, дата начала {startDate}, дата окончания {endDate}.");
+					return BadRequest();
+				}
+
+				return Ok(report);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError($"Внутренняя ошибка создания отчета для сервиса: \n{ex.Message}");
+				return StatusCode(500);
+			}
 		}
 
 		[HttpGet("client")]
-		public ActionResult<ClientReport> CreateClientReport([FromQuery] string IdNumber, DateTime startDate, DateTime endDate)
+		public ActionResult<ClientReport> CreateClientReport([FromQuery] string idNumber, DateTime startDate, DateTime endDate)
 		{
-			var report = _reportsService.BuildClientReport(IdNumber, startDate, endDate);
-
-			if (report == null)
+			try
 			{
-				return BadRequest();
+				var report = _reportsService.BuildClientReport(idNumber, startDate, endDate);
+
+				if (report == null)
+				{
+					_logger.LogError($"Не удалось сформировать отчет по клиентам по параметрам: ИНН клиента {idNumber}, дата начала {startDate}, дата окончания {endDate}.");
+					return BadRequest();
+				}
+
+				return Ok(report);
 			}
+			catch (Exception ex)
+			{
+				_logger.LogError($"Внутренняя ошибка создания отчета для клиента: \n{ex.Message}");
+				return StatusCode(500);
+			}
+		}
 
-			return Ok(report);
-        }
+		[HttpGet("repairs")]
+		public ActionResult<RepairsReport> CreateRepairsReport([FromQuery] DateTime startDate, DateTime endDate)
+		{
+			try
+			{
+				var report = _reportsService.BuildRepairsReport(startDate, endDate);
 
-        [HttpGet("repairs")]
-        public ActionResult<RepairsReport> CreateRepairsReport([FromQuery] DateTime startDate, DateTime endDate)
-        {
-            return Ok(_reportsService.BuildRepairsReport(startDate, endDate));
-        }
+				if (report == null)
+				{
+					_logger.LogError($"Не удалось сформировать отчет по услугам по параметрам:дата начала {startDate}, дата окончания {endDate}.");
+					return BadRequest();
+				}
 
-        [HttpGet("vehicle")]
-        public ActionResult<VehicleReport> CreateVehicleReport([FromQuery] string idNumber, DateTime startDate, DateTime endDate)
-        {
-            return Ok(_reportsService.BuildVehiclesReport(idNumber, startDate, endDate));
-        }
-    }
+
+				return Ok(report);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError($"Внутренняя ошибка создания отчета для услуг: \n{ex.Message}");
+				return StatusCode(500);
+			}
+		}
+
+		[HttpGet("vehicle")]
+		public ActionResult<VehicleReport> CreateVehicleReport([FromQuery] string idNumber, DateTime startDate, DateTime endDate)
+		{
+			try
+			{
+				var report = _reportsService.BuildVehiclesReport(idNumber, startDate, endDate);
+
+				if (report == null)
+				{
+					_logger.LogError($"Не удалось сформировать отчет по ТС по параметрам: номер ТС {idNumber}, дата начала {startDate}, дата окончания {endDate}.");
+					return BadRequest();
+				}
+
+				return Ok();
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError($"Внутренняя ошибка создания отчета для ТС: \n{ex.Message}");
+				return StatusCode(500);
+			}
+		}
+	}
 }
