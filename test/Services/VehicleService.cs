@@ -53,6 +53,16 @@ public class VehicleService
 		_ctx.SaveChanges();
 	}
 
+	public IEnumerable<VehicleDTO> GetClientVehicles(string idNumber)
+	{
+		return _ctx.Clients.Include(x => x.Vehicles).First(x => x.IdNumber == idNumber).Vehicles.Select(x => new VehicleDTO()
+		{
+			ClientNumber = idNumber,
+			Model = x.Model,
+			VehicleNumber = x.VehicleNumber
+		});
+	}
+
 	public void RegisterVehicles(IEnumerable<VehicleDTO> vehicles)
     {
         foreach (var vehicleDTO in vehicles)

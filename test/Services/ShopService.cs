@@ -50,6 +50,6 @@ public class ShopService
 
 	public Shop? GetShop(string shopId)
     {
-        return _ctx.Shops.AsNoTracking().FirstOrDefault(x => x.IdNumber == shopId);
+        return _ctx.Shops.FirstOrDefault(x => x.IdNumber == shopId);
     }
 }

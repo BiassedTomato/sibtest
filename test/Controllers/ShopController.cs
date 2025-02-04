@@ -50,6 +50,12 @@ namespace test.Controllers
 			_vehicleService.RegisterVehicle(vehicle);
 		}
 
+		[HttpGet("getRepairTypes")]
+		public ActionResult GetRepairTypes()
+		{
+			return Ok(_repairService.GetRepairTypes());
+		}
+
 		[HttpPatch("changeRepairStatus")]
 		public void ChangeStatus(Guid repairId, int status)
 		{
@@ -64,9 +70,15 @@ namespace test.Controllers
 		}
 
 		[HttpGet("repairs")]
-		public ActionResult<IEnumerable<Repair>> GetRepairsList([FromQuery] string clientId)
+		public ActionResult<IEnumerable<RepairDTO>> GetRepairsList([FromQuery] string clientId)
 		{
 			return Ok(_repairService.GetClientRepairs(clientId));
+		}
+
+		[HttpGet("vehicles")]
+		public ActionResult<IEnumerable<VehicleDTO>> GetVehiclesList([FromQuery] string clientId)
+		{
+			return Ok(_vehicleService.GetClientVehicles(clientId));
 		}
 
 		public ShopController(ClientService clientService, VehicleService vehicleService, ReportsService reportsService, RepairsService repairsService, ILogger<ShopController> logger)

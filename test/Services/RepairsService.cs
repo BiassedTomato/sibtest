@@ -8,12 +8,10 @@ public class RepairsService
 {
     private readonly AppContext _ctx;
     private readonly ClientService _clientService;
-    private readonly ShopService _shopService;
 
     public RepairsService(AppContext ctx, ClientService clientService, ShopService shopService)
     {
         _ctx = ctx;
-        _shopService = shopService;
         _clientService = clientService;
 	}
 
@@ -67,10 +65,23 @@ public class RepairsService
 		_ctx.SaveChanges();
 	}
 
-	public IEnumerable<Repair> GetClientRepairs(string clientId)
-    {
-        return _ctx.Clients.AsNoTracking().Include(x => x.Repairs).FirstOrDefault(x => x.IdNumber == clientId).Repairs;
-    }
+	public IEnumerable<RepairDTO> GetClientRepairs(string clientId)
+	{
+		var client = _ctx.Clients.First(x=>x.IdNumber== clientId);
+
+		return _ctx.Repairs.Include(x => x.Client).Include(x=>x.Vehicle).Where(x => x.Client == client).Select(x=>new RepairDTO()
+		{
+			ClientNumber=x.Client.IdNumber,
+			Cost=x.Cost,
+			RepairType=x.RepairType.Id,
+			VehicleNumber=x.Vehicle.VehicleNumber,
+		});
+	}
+
+	public IEnumerable<RepairType> GetRepairTypes()
+	{
+		return _ctx.RepairTypes;
+	}
 
     public void ChangeRepairStatus(Guid id, RepairStatus status)
     {
