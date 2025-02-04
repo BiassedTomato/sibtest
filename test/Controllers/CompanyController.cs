@@ -22,9 +22,9 @@ namespace test.Controllers
         private ReportsService _reportsService;
 
 		[HttpGet("shop")]
-		public ActionResult<ShopReport> CreateShopReport([FromQuery] string shopNumber, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+		public ActionResult<ShopReport> CreateShopReport([FromQuery] string idNumber, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
 		{
-			var report = _reportsService.BuildShopReport(shopNumber, startDate, endDate);
+			var report = _reportsService.BuildShopReport(idNumber, startDate, endDate);
 
 			if (report == null)
 			{
@@ -35,9 +35,9 @@ namespace test.Controllers
 		}
 
 		[HttpGet("client")]
-		public ActionResult<ClientReport> CreateClientReport([FromQuery] string IdNumber, DateTime start, DateTime end)
+		public ActionResult<ClientReport> CreateClientReport([FromQuery] string IdNumber, DateTime startDate, DateTime endDate)
 		{
-			var report = _reportsService.BuildClientReport(IdNumber, start, end);
+			var report = _reportsService.BuildClientReport(IdNumber, startDate, endDate);
 
 			if (report == null)
 			{
@@ -48,15 +48,15 @@ namespace test.Controllers
         }
 
         [HttpGet("repairs")]
-        public ActionResult<RepairsReport> CreateRepairsReport([FromBody] string IdNumber, DateTime start, DateTime end)
+        public ActionResult<RepairsReport> CreateRepairsReport([FromQuery] DateTime startDate, DateTime endDate)
         {
-            return Ok(_reportsService.BuildRepairsReport(IdNumber, start, end));
+            return Ok(_reportsService.BuildRepairsReport(startDate, endDate));
         }
 
         [HttpGet("vehicle")]
-        public ActionResult<VehicleReport> CreateVehicleReport([FromQuery] string idNumber, DateTime start, DateTime end)
+        public ActionResult<VehicleReport> CreateVehicleReport([FromQuery] string idNumber, DateTime startDate, DateTime endDate)
         {
-            return Ok(_reportsService.BuildVehiclesReport(idNumber, start, end));
+            return Ok(_reportsService.BuildVehiclesReport(idNumber, startDate, endDate));
         }
     }
 }
