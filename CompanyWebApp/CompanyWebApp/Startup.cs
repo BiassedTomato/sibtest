@@ -51,7 +51,7 @@ namespace CompanyWebApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Client}/{action=report}/");
             });
         }
     }
