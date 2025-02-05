@@ -30,11 +30,6 @@ public class Repair
     public RepairType RepairType { get; set; }
 
     /// <summary>
-    /// Стоимость, руб
-    /// </summary>
-    public float Cost { get; set; }
-
-    /// <summary>
     /// Статус услуги
     /// </summary>
     public RepairStatus RepairStatus { get; set; }

@@ -35,7 +35,7 @@ public class AppContext : DbContext
         {
             Id = Guid.NewGuid(),
             Name = "СТО 'Акула'",
-            IdNumber = "1237873535"
+            IdNumber = "1234567890"
         });
 
         modelBuilder.Entity<RepairType>().HasData(

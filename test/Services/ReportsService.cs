@@ -38,7 +38,7 @@ public class ReportsService
 			{
 				ClientId = x.Client.IdNumber,
 				ClientName = $"{x.Client.FirstName} {x.Client.LastName}",
-				Cost = x.Cost,
+				Cost = x.RepairType.Cost,
 				FinishedDate = x.FinishedDate.Value,
 				ServiceType = x.RepairType.Name,
 				//VehicleMileage = x.Vehicle.,
@@ -76,7 +76,7 @@ public class ReportsService
 			{
 				ClientId = client.IdNumber,
 				ClientName = $"{client.FirstName} {client.LastName}",
-				Cost = x.Cost,
+				Cost = x.RepairType.Cost,
 				FinishedDate = x.FinishedDate.Value,
 				ServiceType = x.RepairType.Name,
 				VehicleModel = x.Vehicle.Model,
@@ -109,7 +109,7 @@ public class ReportsService
 			{
 				ClientId = client.IdNumber,
 				ClientName = $"{client.FirstName} {client.LastName}",
-				Cost = x.Cost,
+				Cost = x.RepairType.Cost,
 				FinishedDate = x.FinishedDate.Value,
 				ServiceType = x.RepairType.Name,
 				VehicleModel = x.Vehicle.Model,
@@ -133,7 +133,7 @@ public class ReportsService
 				ClientName = $"{x.Client.FirstName} {x.Client.LastName}",
 				ShopId=x.Shop.IdNumber,
 				ShopName=x.Shop.Name,
-				Cost = x.Cost,
+				Cost = x.RepairType.Cost,
 				FinishedDate = x.FinishedDate.Value,
 				ServiceType = x.RepairType.Name,
 				VehicleModel = x.Vehicle.Model,

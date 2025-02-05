@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace test.Migrations
 {
     [DbContext(typeof(AppContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20250205120241_RemoveCost")]
+    partial class RemoveCost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,31 +109,31 @@ namespace test.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("43ff72a4-a37f-459a-a7cc-77f6ae345cab"),
+                            Id = new Guid("0071a805-30a3-4766-a1a8-1a587f0c1ade"),
                             Cost = 5000f,
                             Name = "Выправление вмятин"
                         },
                         new
                         {
-                            Id = new Guid("7a1b5213-8781-4ff2-81b8-12962553f6c0"),
+                            Id = new Guid("7e1d35a0-b292-45aa-bcfc-3d2ede1200b7"),
                             Cost = 8000f,
                             Name = "Замена масла"
                         },
                         new
                         {
-                            Id = new Guid("012e7144-a42f-4db7-9b35-21a0f85c5082"),
+                            Id = new Guid("f58d0478-507c-4e36-9f05-bbfdcc16cf77"),
                             Cost = 500000f,
                             Name = "Замена двигателя"
                         },
                         new
                         {
-                            Id = new Guid("b2231e87-09a8-4505-90f5-5880f9f05914"),
+                            Id = new Guid("7a320b57-a15f-4681-88ce-f88f950495fb"),
                             Cost = 2500f,
                             Name = "Замена колес/покрышек"
                         },
                         new
                         {
-                            Id = new Guid("34195d1e-b325-4f56-aa64-d8d11067597d"),
+                            Id = new Guid("ad223441-7957-4919-bea5-685cce636387"),
                             Cost = 800f,
                             Name = "Установка радиоприемника"
                         });
@@ -156,8 +158,8 @@ namespace test.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7bc39ced-d354-434b-a51e-fc81f4726165"),
-                            IdNumber = "1234567890",
+                            Id = new Guid("c44f3c7d-0d76-4abf-a03f-555a1cdee7da"),
+                            IdNumber = "1237873535",
                             Name = "СТО 'Акула'"
                         });
                 });
