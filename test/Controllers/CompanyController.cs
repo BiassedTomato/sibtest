@@ -101,7 +101,7 @@ namespace test.Controllers
 					return BadRequest();
 				}
 
-				return Ok();
+				return Ok(report);
 			}
 			catch (Exception ex)
 			{
