@@ -15,7 +15,7 @@
                     <Button Content="Зарегистрировать клиента" Click="RegisterClient_Click"/>
                 </StackPanel>
             </TabItem>
-            
+
             <TabItem Header="Добавить ТС">
                 <StackPanel Margin="10">
                     <Label Content="ИНН клиента:"/>
@@ -27,23 +27,7 @@
                     <Button Content="Добавить ТС" Click="AssignVehicle_Click"/>
                 </StackPanel>
             </TabItem>
-
-            <TabItem Header="Управление типами услуг">
-                <StackPanel Margin="10">
-                    <Label Content="Услуги:"/>
-                    <ListBox x:Name="RepairTypesListBox" Margin="0,0,0,10" DisplayMemberPath="Name" SelectionChanged="RepairTypesListBox_SelectionChanged"/>
-                    <Label Content="Наименование услуги:"/>
-                    <TextBox x:Name="RepairTypeNameTextBox" Margin="0,0,0,10"/>
-                    <Label Content="Стоимость:"/>
-                    <TextBox x:Name="RepairTypeCostTextBox" Text="0"  Margin="0,0,0,10"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                        <Button Content="Add" Click="AddRepairType_Click" Margin="0,0,10,0"/>
-                        <Button Content="Update" Click="UpdateRepairType_Click" Margin="0,0,10,0"/>
-                        <Button Content="Delete" Click="DeleteRepairType_Click"/>
-                    </StackPanel>
-                </StackPanel>
-            </TabItem>
-
+            
             <TabItem Header="Создать услугу">
                 <StackPanel Margin="10">
                     <Label Content="ИНН клиента:"/>

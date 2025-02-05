@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -15,29 +16,20 @@ namespace RepairManagementApp
 		private static readonly HttpClient client = new HttpClient();
 		private const string BaseUrl = "https://localhost:5001/shop";
 
-		//TODO: удалить 
-		private static readonly string ShopId = "1237873535";
+		private static string? ShopId { get; set; }
 
 		public MainWindow()
 		{
+			ShopId = ConfigurationManager.AppSettings["shopId"];
 			InitializeComponent();
-			//LoadShops();
-			LoadReportTypes();
-			LoadStatusComboBox();
-		}
-
-		private async void LoadShops()
-		{
-			//var response = await client.GetAsync($"{BaseUrl}/shops");
-			//if (response.IsSuccessStatusCode)
+			try
 			{
-				//	var shopsJson = await response.Content.ReadAsStringAsync();
-				//var shops = JsonConvert.DeserializeObject<List<Shop>>(shopsJson);
-				//ShopComboBox.ItemsSource = shops;
+				LoadReportTypes();
+				LoadStatusComboBox();
 			}
-			//else
+			catch (Exception ex)
 			{
-				//	MessageBox.Show("Failed to fetch shops.");
+				MessageBox.Show("Не удалось получить данные. Проверьте подключение и перезапустите программу.");
 			}
 		}
 
@@ -54,9 +46,9 @@ namespace RepairManagementApp
 					Id = x.Id
 				}).ToList();
 
-				if (types.Count() > 0)
+				if (types.Count > 0)
 				{
-					RepairTypeComboBox.SelectedItem = types[0];
+					RepairTypeComboBox.SelectedIndex = 0;
 				}
 
 				RepairTypeComboBox.ItemsSource = types;
@@ -99,96 +91,6 @@ namespace RepairManagementApp
 			}
 		}
 
-		private async void LoadRepairTypes()
-		{
-			var response = await client.GetAsync($"{BaseUrl}/repair-types");
-			if (response.IsSuccessStatusCode)
-			{
-				var repairTypesJson = await response.Content.ReadAsStringAsync();
-				var repairTypes = JsonConvert.DeserializeObject<List<RepairType>>(repairTypesJson);
-				RepairTypesListBox.ItemsSource = repairTypes;
-			}
-			else
-			{
-				MessageBox.Show("Failed to fetch repair types.");
-			}
-		}
-
-		private void RepairTypesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			var selectedRepairType = RepairTypesListBox.SelectedItem as RepairType;
-			if (selectedRepairType != null)
-			{
-				RepairTypeNameTextBox.Text = selectedRepairType.Name;
-			}
-		}
-
-		private async void AddRepairType_Click(object sender, RoutedEventArgs e)
-		{
-			var repairTypeData = new
-			{
-				Name = RepairTypeNameTextBox.Text
-			};
-
-			var response = await client.PostAsJsonAsync($"{BaseUrl}/repair-types", repairTypeData);
-			if (response.IsSuccessStatusCode)
-			{
-				MessageBox.Show("Repair type added successfully!");
-				LoadRepairTypes(); // Refresh the list
-			}
-			else
-			{
-				MessageBox.Show("Failed to add repair type.");
-			}
-		}
-
-		private async void UpdateRepairType_Click(object sender, RoutedEventArgs e)
-		{
-			var selectedRepairType = RepairTypesListBox.SelectedItem as RepairType;
-			if (selectedRepairType == null)
-			{
-				MessageBox.Show("Please select a repair type to update.");
-				return;
-			}
-
-			var repairTypeData = new
-			{
-				Id = selectedRepairType.Id,
-				Name = RepairTypeNameTextBox.Text
-			};
-
-			var response = await client.PutAsJsonAsync($"{BaseUrl}/repair-types/{selectedRepairType.Id}", repairTypeData);
-			if (response.IsSuccessStatusCode)
-			{
-				MessageBox.Show("Repair type updated successfully!");
-				LoadRepairTypes(); // Refresh the list
-			}
-			else
-			{
-				MessageBox.Show("Failed to update repair type.");
-			}
-		}
-
-		private async void DeleteRepairType_Click(object sender, RoutedEventArgs e)
-		{
-			var selectedRepairType = RepairTypesListBox.SelectedItem as RepairType;
-			if (selectedRepairType == null)
-			{
-				MessageBox.Show("Please select a repair type to delete.");
-				return;
-			}
-
-			var response = await client.DeleteAsync($"{BaseUrl}/repair-types/{selectedRepairType.Id}");
-			if (response.IsSuccessStatusCode)
-			{
-				MessageBox.Show("Repair type deleted successfully!");
-				LoadRepairTypes(); // Refresh the list
-			}
-			else
-			{
-				MessageBox.Show("Failed to delete repair type.");
-			}
-		}
 
 	private async void RegisterClient_Click(object sender, RoutedEventArgs e)
 		{
@@ -209,11 +111,11 @@ namespace RepairManagementApp
 			var response = await client.PostAsJsonAsync($"{BaseUrl}/registerClient", clientData);
 			if (response.IsSuccessStatusCode)
 			{
-				MessageBox.Show("Client registered successfully!");
+				MessageBox.Show("Регистрация клиента успешна!");
 			}
 			else
 			{
-				MessageBox.Show("Failed to register client.");
+				MessageBox.Show("Ошибка регистрации клиента.");
 			}
 		}
 
@@ -226,10 +128,15 @@ namespace RepairManagementApp
 				var vehiclesJson = await response.Content.ReadAsStringAsync();
 				var vehicles = JsonConvert.DeserializeObject<List<Vehicle>>(vehiclesJson);
 				VehicleComboBox.ItemsSource = vehicles;
+
+				if (vehicles != null && vehicles.Count > 0)
+				{
+					VehicleComboBox.SelectedIndex = 0;
+				}
 			}
 			else
 			{
-				MessageBox.Show("Failed to fetch vehicles.");
+				MessageBox.Show("Не удалось получить список ТС.");
 			}
 		}
 
@@ -252,11 +159,11 @@ namespace RepairManagementApp
 			var response = await client.PostAsJsonAsync($"{BaseUrl}/createRepair", repairData);
 			if (response.IsSuccessStatusCode)
 			{
-				MessageBox.Show("Repair entry created successfully!");
+				MessageBox.Show("Услуга была начата.");
 			}
 			else
 			{
-				MessageBox.Show("Failed to create repair entry.");
+				MessageBox.Show("Не удалось начать услугу.");
 			}
 		}
 
@@ -269,10 +176,15 @@ namespace RepairManagementApp
 				var repairsJson = await response.Content.ReadAsStringAsync();
 				var repairs = JsonConvert.DeserializeObject<List<Repair>>(repairsJson);
 				RepairStatusComboBox.ItemsSource = repairs;
+
+				if(repairs!=null&&repairs.Count>0)
+				{
+					RepairStatusComboBox.SelectedIndex = 0;
+				}
 			}
 			else
 			{
-				MessageBox.Show("Failed to fetch repairs.");
+				MessageBox.Show("Не удалось получить список активных услуг.");
 			}
 		}
 
@@ -294,11 +206,11 @@ namespace RepairManagementApp
 			var response = await client.PatchAsync($"{BaseUrl}/changeRepairStatus?repairId={RepairStatusComboBox.SelectedValue}&status={(int)StatusComboBox.SelectedValue}", null);
 			if (response.IsSuccessStatusCode)
 			{
-				MessageBox.Show("Repair status updated successfully!");
+				MessageBox.Show("Статус услуги успешно обновлен!");
 			}
 			else
 			{
-				MessageBox.Show("Failed to update repair status.");
+				MessageBox.Show("Ошибка обновления статуса услуги.");
 			}
 		}
 	}
