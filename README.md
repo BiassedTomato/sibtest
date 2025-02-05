@@ -62,3 +62,7 @@ https://localhost:5007/shop/report
 `dotnet dev-certs https`
 
 Команда установит валидные HTTPS сертификаты.
+
+
+## Прочее
+Отладка проводилась силами DBeaver, дебаггера VS22 и Postman.
