@@ -19,6 +19,10 @@
 Веб-интерфейс хостится на https://localhost:5007
 
 Отчеты по магазинам: https://localhost:5007/reports/shop
+
 Ответы по клиентам: https://localhost:5007/reports/client
+
 Отчеты по ТС: https://localhost:5007/reports/vehicle
+
 Отчеты по услугам: https://localhost:5007/reports/repairs
+
